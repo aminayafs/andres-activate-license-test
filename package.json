@@ -6,12 +6,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/buildalon/activate-unity-license.git"
+    "url": "git+https://github.com/aminayafs/andres-activate-license-test.git"
   },
   "bugs": {
-    "url": "https://github.com/buildalon/activate-unity-license/issues"
+    "url": "https://github.com/aminayafs/andres-activate-license-test.git/issues"
   },
-  "homepage": "https://github.com/buildalon/activate-unity-license",
+  "homepage": "https://github.com/aminayafs/andres-activate-license-test",
   "main": "dist/index.js",
   "keywords": [
     "unity",
