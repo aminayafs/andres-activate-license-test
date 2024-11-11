@@ -129,28 +129,36 @@ async function Version(): Promise<void> {
 }
 
 async function ShowEntitlements(): Promise<string[]> {
-    const output = await execWithMask([`--showEntitlements`]);
-    core.debug(`Show Entitlements: ${output}`);
-    const matches = output.matchAll(/Product Name: (?<license>.+)/g);
-    const licenses = [];
-    for (const match of matches) {
+    try {
+      const output = await execWithMask([`--showEntitlements`]);
+      core.debug('Executing --showEntitlements command');
+      core.info(output);
+  
+      const matches = output.matchAll(/Product Name: (?<license>.+)/g);
+      const licenses = [];
+      for (const match of matches) {
         if (match.groups.license) {
-            switch (match.groups.license) {
-                case 'Unity Pro':
-                    if (!licenses.includes('professional')) {
-                        licenses.push('professional');
-                    }
-                    break;
-                case 'Unity Personal':
-                    if (!licenses.includes('personal')) {
-                        licenses.push('personal');
-                    }
-                    break;
-            }
+          switch (match.groups.license) {
+            case 'Unity Pro':
+              if (!licenses.includes('professional')) {
+                licenses.push('professional');
+              }
+              break;
+            case 'Unity Personal':
+              if (!licenses.includes('personal')) {
+                licenses.push('personal');
+              }
+              break;
+          }
         }
+      }
+      return licenses;
+    } catch (error) {
+      core.error('Error executing --showEntitlements command:');
+      core.error(error);
+      throw error;
     }
-    return licenses;
-}
+  }
 
 async function ActivateLicense(username: string, password: string, serial: string): Promise<void> {
     const args = [`--activate-ulf`, `--username`, username, `--password`, password];
