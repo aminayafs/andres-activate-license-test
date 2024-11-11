@@ -130,6 +130,7 @@ async function Version(): Promise<void> {
 
 async function ShowEntitlements(): Promise<string[]> {
     const output = await execWithMask([`--showEntitlements`]);
+    core.debug(`Show Entitlements: ${output}`);
     const matches = output.matchAll(/Product Name: (?<license>.+)/g);
     const licenses = [];
     for (const match of matches) {
