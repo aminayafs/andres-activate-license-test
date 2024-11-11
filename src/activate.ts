@@ -8,13 +8,16 @@ async function Activate(): Promise<void> {
         await licenseClient.Version();
         let activeLicenses = await licenseClient.ShowEntitlements();
         license = core.getInput('license', { required: true });
+
         switch (license.toLowerCase()) {
             case 'professional':
             case 'personal':
             case 'floating':
+            case 'buildserverfree':
+            case 'buildserver':
                 break;
-            default:
-                throw Error(`Invalid License: ${license}! Must be Professional, Personal, or Floating.`);
+            // default:
+            //     throw Error(`Invalid License: ${license}! Must be Professional, Personal, Floating, BuildServerFree, or BuildServer.`);
         }
         core.saveState('license', license);
         if (activeLicenses.includes(license.toLocaleLowerCase())) {
@@ -23,7 +26,7 @@ async function Activate(): Promise<void> {
         }
         core.startGroup('Attempting to activate Unity License...');
         try {
-            if (license.toLowerCase().startsWith('f')) {
+            if (license.toLowerCase().startsWith('f') || license.toLowerCase().startsWith('b')) {
                 const servicesConfig = core.getInput('services-config', { required: true });
                 await licenseClient.ActivateLicenseWithConfig(servicesConfig);
             } else {
